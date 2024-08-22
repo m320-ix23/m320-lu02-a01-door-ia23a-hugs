@@ -1,16 +1,23 @@
+"""
+This module defines the Door and DoorLock classes. The Door class represents a door with states
+like open/closed and locked/unlocked, and it interacts with a DoorLock object to manage its locked state.
+"""
+
+
 class Door:
     """
-    Diese Klasse beschreibt eine Tür mit der Eigenschaft color (Farbe) und den Zuständen
-    door_is_open (für geöffnete Tür) sowie door_is_locked (für verriegelte Tür).
-    Die Tür überwacht die beiden Zustände und verhindert so Aktionen, die nicht möglich sind.
-    Das Verriegeln selber delegiert die Tür an ein Objekt vom Typ DoorLock (Türschloss).
+    This class describes a door with the property 'color' and the states
+    'door_is_open' (whether the door is open) and 'door_is_locked' (whether the door is locked).
+    The door monitors these states to prevent invalid actions.
+    Locking is delegated to an object of type DoorLock.
     """
 
     def __init__(self, ref2door_lock, base_color):
         """
-        Erzeugt ein Tür-Objekt.
-        :param ref2door_lock: Referenz auf ein DoorLock-Objekt
-        :param base_color: Anfangsfarbe der Tür
+        Initializes a Door object.
+
+        :param ref2door_lock: Reference to a DoorLock object
+        :param base_color: Initial color of the door
         """
         self._the_door_lock = ref2door_lock
         self.color = base_color
@@ -19,40 +26,34 @@ class Door:
 
     def open_the_door(self):
         """
-        Methode für das Öffnen der Tür.
-        Das ist nur möglich, wenn die Tür nicht verriegelt ist.
+        Opens the door if it is not locked.
         """
         if not self._door_is_locked:
             self._door_is_open = True
 
     def close_the_door(self):
         """
-        Methode für das Schließen der Tür.
-        Das geht immer, auch wenn die Tür schon geschlossen oder verriegelt ist.
+        Closes the door. This action can be performed regardless of the door's current state.
         """
         self._door_is_open = False
 
     def lock_the_door(self):
         """
-        Methode für das Verriegeln der Tür.
-        Das ist nur möglich, wenn die Tür geschlossen ist.
-        Für das Verriegeln ist das Türschloss zuständig. Es weiß, wie das geht.
+        Locks the door if it is closed. The locking mechanism is handled by the DoorLock object.
         """
         if not self._door_is_open:
             self._door_is_locked = self._the_door_lock.lock()
 
     def unlock_the_door(self):
         """
-        Methode für das Entriegeln der Tür.
-        Das ist nur möglich, wenn die Tür verriegelt ist.
-        Für das Entriegeln ist das Türschloss zuständig. Es weiß, wie das geht.
+        Unlocks the door if it is locked. The unlocking mechanism is handled by the DoorLock object.
         """
         if self._door_is_locked:
             self._door_is_locked = not self._the_door_lock.unlock()
 
     def test(self):
         """
-        Gibt alle Attribute im Standardausgabestream aus.
+        Outputs the current attributes of the door to the standard output.
         """
         print(f'Türfarbe: {self.color}')
         print(f'Tür offen: {self._door_is_open}')
@@ -61,57 +62,68 @@ class Door:
     @property
     def door_is_open(self):
         """
-        Getter-Methode für den Zustand door_is_open.
-        :return: True, wenn die Tür offen ist, sonst False.
+        Returns whether the door is open.
+        :return: True if the door is open, False otherwise.
         """
         return self._door_is_open
 
     @property
     def door_is_locked(self):
         """
-        Getter-Methode für den Zustand door_is_locked.
-        :return: True, wenn die Tür verriegelt ist, sonst False.
+        Returns whether the door is locked.
+        :return: True if the door is locked, False otherwise.
         """
         return self._door_is_locked
 
     @property
     def color(self):
         """
-        Getter-Methode für die Eigenschaft color.
-        :return: Die Farbe der Tür.
+        Returns the color of the door.
+        :return: The color of the door.
         """
         return self._color
 
     @color.setter
     def color(self, new_color):
         """
-        Setter-Methode für die Eigenschaft color.
-        :param new_color: Neue Farbe der Tür.
+        Sets a new color for the door.
+        :param new_color: The new color to be applied to the door.
         """
         self._color = new_color
 
 
 class DoorLock:
     """
-    Dummy-Klasse, damit in der Klasse Door kein Fehler auftritt.
+    A simple class that represents a door lock. It provides methods to lock and unlock the door.
     """
 
     def __init__(self):
-        print("Ein Schloss wurde erzeugt.")
+        """
+        Initializes a DoorLock object.
+        """
+        print("A lock has been created.")
 
     def lock(self):
+        """
+        Locks the door.
+        :return: True, indicating that the door is now locked.
+        """
         return True
 
     def unlock(self):
+        """
+        Unlocks the door.
+        :return: False, indicating that the door is now unlocked.
+        """
         return False
 
 
-# Hier die main-Methode festlegen
+# Main method for testing
 if __name__ == "__main__":
-    print("Test für Tür-Objekt")
+    print("Testing Door object")
     the_door_lock = DoorLock()
-    the_door = Door(the_door_lock, "grün")
+    the_door = Door(the_door_lock, "green")
     the_door.test()
-    print("-- Tür jetzt öffnen")
+    print("-- Now opening the door")
     the_door.open_the_door()
     the_door.test()
