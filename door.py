@@ -1,3 +1,11 @@
+"""
+This module defines the Door and DoorLock classes.
+
+The Door class represents a door with states such as open/closed and locked/unlocked.
+It interacts with a DoorLock object to manage its locked state, ensuring that certain
+actions like opening a locked door or locking an open door are not allowed.
+"""
+
 class Door:
   """
   Diese Klasse beschreibt eine Türe mit der Eigenschaft
@@ -23,7 +31,7 @@ class Door:
     Das ist aber nur möglich, wenn die Türe nicht
     verriegelt ist.
     """
-    if self._door_is_locked == False:
+    if not self._door_is_locked:
       self._door_is_open = True
 
   def close_the_door(self):
@@ -39,7 +47,7 @@ class Door:
     Das ist nur möglich, wenn die Türe nicht offen ist.
     Für das Verriegeln ist aber das Türschloss zuständig.
     """
-    if self._door_is_open == False:
+    if not self._door_is_open:
       self._door_is_locked = self._the_door_lock.lock()
 
   def unlock_the_door(self):
